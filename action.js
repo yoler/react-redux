@@ -9,3 +9,7 @@ export const minAction = () => {
 export const incrementAsync = () => {
     return { type: 'incrementAsync' }
 }
+
+export const getData = () => {
+    return { type: 'getData' }
+}
