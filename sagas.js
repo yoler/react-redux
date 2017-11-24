@@ -1,17 +1,21 @@
 import { delay } from 'redux-saga'
-import { put, takeEvery, all } from 'redux-saga/effects'
+import { put, takeEvery, all, call, select} from 'redux-saga/effects'
 
-export function* helloSaga() {
+function* helloSaga() {
    console.log('hello saga')
 }
 
-export function* getData() {
-    let res = yield fetch('https://api.github.com/user')
+let getCart = state => state.count
+
+function* getData(action) {
+    let state = yield select(getCart)
+    console.log(action, state)
+    let res = yield call(fetch, 'https://api.github.com/user')
     console.log(res)
     yield put({type: 'increase3'})
 }
 
-export function* incrementAsync() {
+function* incrementAsync() {
     yield delay(1000)
     yield put({type: 'increase2'})
 }
@@ -24,7 +28,7 @@ export function* incrementAsync() {
 //     yield takeEvery('incrementAsync', incrementAsync)
 // }
 
-export default function* rootSaga() {
+export default function* rootSaga(getState) {
   // yield all([
   //   helloSaga(),
   //   watchGetData(),
@@ -33,3 +37,4 @@ export default function* rootSaga() {
   yield takeEvery('getData', getData)
   yield takeEvery('incrementAsync', incrementAsync)
 }
+
